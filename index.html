@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Snake Game — Play Globally</title>
+  <link rel="icon" type="image/jpeg" href="R.jpeg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- First-time registration (shown before dashboard) -->
+  <div id="registrationScreen" class="registration-screen" aria-hidden="true">
+    <div class="registration-bg"></div>
+    <div class="registration-card">
+      <h1 class="registration-title">👋 Welcome to Snake</h1>
+      <p class="registration-subtitle">🌍 Play with players worldwide. Enter your details to continue.</p>
+      <form id="registrationForm" class="registration-form" novalidate>
+        <label class="reg-label" for="regName">Your name</label>
+        <input type="text" id="regName" class="reg-input" placeholder="e.g. Alex" required maxlength="50" autocomplete="name">
+        <label class="reg-label" for="regAge">Your age</label>
+        <input type="number" id="regAge" class="reg-input" placeholder="e.g. 10" min="3" max="120" required autocomplete="off">
+        <p class="reg-note">You must be 3 years or older to play.</p>
+        <label class="reg-label" for="regCountry">Country</label>
+        <input type="text" id="regCountry" class="reg-input" placeholder="Type or choose from list" required maxlength="60" autocomplete="off" list="countryDatalist">
+        <datalist id="countryDatalist"></datalist>
+        <p id="regError" class="reg-error" aria-live="polite"></p>
+        <button type="submit" class="btn btn-primary btn-block">Enter the game</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Dashboard (home) -->
+  <section id="dashboard" class="dashboard" aria-hidden="true">
+    <div class="dashboard-bg"></div>
+    <div class="dashboard-content dashboard-content--universal">
+      <!-- Full home (game-style: hero, tap to play, nav) -->
+      <div id="dashboardFull" class="dashboard-full">
+        <header class="home-top-bar">
+          <button id="menuBtnHome" type="button" class="home-menu-btn" title="Go to menu">☰ Menu</button>
+          <div class="home-score-wrap">
+            <span class="home-score-label">Score</span>
+            <span id="highScoreDisplay" class="home-score-value">0</span>
+          </div>
+          <button id="settingsBtnHome" type="button" class="home-settings-btn" title="Settings">⚙️</button>
+          <button id="logoutBtnHome" type="button" class="home-logout-btn" title="Logout">🚪 Logout</button>
+        </header>
+
+        <div class="home-hero" id="homeSection">
+          <div class="dashboard-logo home-logo" aria-hidden="false">
+            <span class="title-icon" aria-hidden="true">🐍</span>
+            <h1 class="dashboard-title">Snake</h1>
+          </div>
+          <p class="dashboard-tagline home-tagline">🌍 Play globally. Eat, grow, don't crash.</p>
+          <p id="welcomeUser" class="dashboard-welcome home-welcome">👋 Hello, <span id="userNameDisplay">Player</span>!</p>
+          <button id="playBtn" type="button" class="btn btn-primary btn-tap-to-play">🎮 Tap to play</button>
+          <button id="autoTourBtn" type="button" class="btn btn-secondary btn-auto-tour" title="Guided tour of the game">🔍 Auto tour</button>
+        </div>
+
+        <div class="home-nav-bar">
+          <button type="button" class="home-nav-item home-nav-play" data-action="play" aria-label="Play">
+            <span class="home-nav-icon">🎮</span>
+            <span class="home-nav-label">Play</span>
+          </button>
+          <a href="recent.html" class="home-nav-item home-nav-link home-nav-recent" aria-label="Recent scores">
+            <span class="home-nav-icon">📋</span>
+            <span class="home-nav-label">Recent</span>
+          </a>
+          <a href="leaderboard.html" class="home-nav-item home-nav-link home-nav-leaderboard" aria-label="Leaderboard">
+            <span class="home-nav-icon">🏆</span>
+            <span class="home-nav-label">Leaderboard</span>
+          </a>
+          <button type="button" class="home-nav-item home-nav-about" data-action="about" aria-label="About">
+            <span class="home-nav-icon">ℹ️</span>
+            <span class="home-nav-label">About</span>
+          </button>
+          <button type="button" class="home-nav-item home-nav-settings" data-action="settings" aria-label="Settings">
+            <span class="home-nav-icon">⚙️</span>
+            <span class="home-nav-label">Settings</span>
+          </button>
+          <button type="button" class="home-nav-item home-nav-help" data-action="help" aria-label="How to play">
+            <span class="home-nav-icon">❓</span>
+            <span class="home-nav-label">Help</span>
+          </button>
+          <button type="button" class="home-nav-item home-nav-design" data-action="design" aria-label="Modern UI guide">
+            <span class="home-nav-icon">✨</span>
+            <span class="home-nav-label">Design</span>
+          </button>
+          <button type="button" class="home-nav-item home-nav-logout" data-action="logout" aria-label="Logout">
+            <span class="home-nav-icon">🚪</span>
+            <span class="home-nav-label">Logout</span>
+          </button>
+        </div>
+
+        <button id="aboutBtn" type="button" class="sr-only" aria-hidden="true">About</button>
+        <button id="settingsBtn" type="button" class="sr-only" aria-hidden="true">Settings</button>
+        </div>
+      </div>
+
+      <!-- Post-game home (only after losing: Play Game, About, Contact, Logout) -->
+      <div id="dashboardPostLoss" class="dashboard-post-loss" aria-hidden="true">
+        <div class="dashboard-logo">
+          <span class="title-icon">🐍</span>
+          <h1 class="dashboard-title">Snake</h1>
+        </div>
+        <p class="dashboard-tagline">🌍 Play globally. Eat, grow, don't crash.</p>
+        <p class="dashboard-post-loss-message">Choose an option below</p>
+        <div class="dashboard-actions dashboard-actions--post-loss">
+          <button id="playBtnPostLoss" type="button" class="btn btn-primary">🎮 Play Game</button>
+          <button id="aboutBtnPostLoss" type="button" class="btn btn-secondary">ℹ️ About</button>
+          <a href="mailto:lahirunuwanga02@gmail.com" class="btn btn-secondary contact-btn-post-loss">📧 Contact</a>
+          <button id="settingsBtnPostLoss" type="button" class="btn btn-secondary">⚙️ Settings</button>
+          <button id="logoutBtn" type="button" class="btn btn-secondary btn-logout">🚪 Logout</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Game screen (can go fullscreen) -->
+  <main id="gameScreen" class="game-screen" aria-hidden="true">
+    <div class="game-container">
+      <header class="game-header">
+        <button id="menuBtn" type="button" class="btn-menu" title="Back to menu">☰ Menu</button>
+        <h2 class="game-title">Snake</h2>
+        <div class="game-header-right">
+          <button id="fullscreenBtn" type="button" class="btn-fullscreen" title="Full screen" aria-label="Toggle full screen">⛶</button>
+          <span class="score-label">Score</span>
+          <span id="score" class="score-value">0</span>
+        </div>
+      </header>
+
+      <div class="game-wrapper">
+        <canvas id="gameCanvas" width="400" height="400" aria-label="Snake game board" tabindex="0"></canvas>
+        <div id="gameOverOverlay" class="overlay" aria-hidden="true">
+          <p class="overlay-title">💔 Game Over</p>
+          <p class="overlay-score">Score: <span id="finalScore">0</span></p>
+          <div class="overlay-buttons">
+            <button id="restartBtn" type="button" class="btn btn-primary">🔄 Play Again</button>
+            <button id="gameOverMenuBtn" type="button" class="btn btn-secondary">☰ Menu</button>
+          </div>
+        </div>
+        <div id="startOverlay" class="overlay overlay-start" aria-hidden="false">
+          <p class="overlay-title">🎮 Ready?</p>
+          <p class="overlay-hint">Use arrows below or Arrow keys / WASD</p>
+          <div class="overlay-scale-buttons">
+            <button id="startSmallBtn" type="button" class="btn btn-primary btn-scale" title="Play in window">▶️ Small scale</button>
+            <button id="startFullBtn" type="button" class="btn btn-secondary btn-scale" title="Play full screen">⛶ Full scale</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="direction-pad" aria-label="Direction controls">
+        <button type="button" class="dir-btn dir-up" id="btnUp" title="Up">▲</button>
+        <button type="button" class="dir-btn dir-down" id="btnDown" title="Down">▼</button>
+        <button type="button" class="dir-btn dir-left" id="btnLeft" title="Left">◀</button>
+        <button type="button" class="dir-btn dir-right" id="btnRight" title="Right">▶</button>
+      </div>
+
+      <footer class="game-footer">
+        <p>Use the arrow buttons above or Arrow keys / WASD to move</p>
+      </footer>
+    </div>
+  </main>
+
+  <!-- About modal -->
+  <div id="aboutModal" class="modal" role="dialog" aria-labelledby="aboutTitle" aria-hidden="true">
+    <div class="modal-backdrop"></div>
+    <div class="modal-content">
+      <h2 id="aboutTitle" class="modal-title">ℹ️ About</h2>
+      <div class="about-body">
+        <img src="gemini-removed.jpg" alt="Mr. Lahiru Nuwanga Rathnayake" class="about-photo">
+        <p class="about-game">A classic Snake game built for the web. Eat the food, grow longer, and avoid the walls and your own tail.</p>
+        <p class="about-credit">
+          <strong>Developed by</strong><br>
+          <span class="developer-name">Mr. Lahiru Nuwanga Rathnayake</span>
+        </p>
+      </div>
+      <button id="aboutCloseBtn" type="button" class="btn btn-primary">Close</button>
+    </div>
+  </div>
+
+  <!-- Settings modal -->
+  <div id="settingsModal" class="modal" role="dialog" aria-labelledby="settingsTitle" aria-hidden="true">
+    <div class="modal-backdrop"></div>
+    <div class="modal-content modal-content--wide">
+      <h2 id="settingsTitle" class="modal-title">⚙️ Settings</h2>
+      <div class="settings-section">
+        <h3 class="settings-heading">Theme</h3>
+        <div id="themeOptions" class="theme-options" role="group" aria-label="Choose theme">
+          <button type="button" class="theme-card" data-theme="dark" aria-pressed="true">Dark</button>
+          <button type="button" class="theme-card" data-theme="ocean">Ocean</button>
+          <button type="button" class="theme-card" data-theme="neon">Neon</button>
+          <button type="button" class="theme-card" data-theme="forest">Forest</button>
+          <button type="button" class="theme-card" data-theme="sunset">Sunset</button>
+          <button type="button" class="theme-card" data-theme="light">Light</button>
+        </div>
+      </div>
+      <div class="settings-section">
+        <h3 class="settings-heading">Speed</h3>
+        <div class="speed-options" role="group" aria-label="Game speed">
+          <label class="speed-option">
+            <input type="radio" name="speed" value="150" checked>
+            <span>Easy</span>
+          </label>
+          <label class="speed-option">
+            <input type="radio" name="speed" value="120">
+            <span>Medium</span>
+          </label>
+          <label class="speed-option">
+            <input type="radio" name="speed" value="90">
+            <span>Hard</span>
+          </label>
+        </div>
+      </div>
+      <div class="settings-section">
+        <h3 class="settings-heading">Sound</h3>
+        <label class="toggle-row">
+          <span class="toggle-label">Sound effects</span>
+          <input id="soundToggle" type="checkbox" checked class="toggle-input">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+      <button id="settingsCloseBtn" type="button" class="btn btn-primary">Done</button>
+    </div>
+  </div>
+
+  <!-- Help / Tutorial modal -->
+  <div id="helpModal" class="modal" role="dialog" aria-labelledby="helpTitle" aria-hidden="true">
+    <div class="modal-backdrop"></div>
+    <div class="modal-content modal-content--wide">
+      <h2 id="helpTitle" class="modal-title">❓ How to play</h2>
+      <div class="help-body">
+        <p class="help-intro">Welcome to Snake. Here’s a quick guide:</p>
+        <ul class="help-list">
+          <li><strong>Start:</strong> Tap “Tap to play” or the Play button, then choose Small scale or Full scale.</li>
+          <li><strong>Move:</strong> Use the arrow buttons on screen or Arrow keys / W A S D on your keyboard.</li>
+          <li><strong>Eat food:</strong> Guide the snake to the food (colored dot) to grow and score points.</li>
+          <li><strong>Don’t crash:</strong> Avoid hitting the walls or your own tail.</li>
+          <li><strong>Recent & Leaderboard:</strong> Check your recent scores and rankings from the menu.</li>
+        </ul>
+        <p class="help-outro">Have fun and try to beat your high score!</p>
+      </div>
+      <div class="help-actions">
+        <button id="helpListenBtn" type="button" class="btn btn-secondary">🔊 Listen (gentle voice)</button>
+        <button id="helpCloseBtn" type="button" class="btn btn-primary">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Auto tour modal -->
+  <div id="tourModal" class="modal" role="dialog" aria-labelledby="tourTitle" aria-hidden="true">
+    <div class="modal-backdrop"></div>
+    <div class="modal-content modal-content--wide">
+      <h2 id="tourTitle" class="modal-title">🔍 Quick tour</h2>
+      <p id="tourStepText" class="tour-step-text"></p>
+      <div class="tour-actions">
+        <button id="tourPrevBtn" type="button" class="btn btn-secondary">← Back</button>
+        <button id="tourVoiceBtn" type="button" class="btn btn-secondary">🔊 Read aloud</button>
+        <button id="tourNextBtn" type="button" class="btn btn-primary">Next →</button>
+      </div>
+      <p class="tour-progress" id="tourProgress"></p>
+      <button id="tourCloseBtn" type="button" class="btn btn-primary btn-block">End tour</button>
+    </div>
+  </div>
+
+  <!-- Modern UI / Design guide modal -->
+  <div id="designModal" class="modal" role="dialog" aria-labelledby="designTitle" aria-hidden="true">
+    <div class="modal-backdrop"></div>
+    <div class="modal-content modal-content--wide modal-content--design">
+      <h2 id="designTitle" class="modal-title">✨ Modern UI Guide</h2>
+      <div class="design-modal-body">
+        <section class="design-section">
+          <h3 class="design-section-title">1. Foundational Design Principles & Philosophies</h3>
+          <p class="design-intro">These are the overarching mindsets that guide modern UI creation.</p>
+          <ul class="design-list">
+            <li><strong>User-Centered Design (UCD):</strong> The core of everything. Designing based on deep user research, personas, and usability testing.</li>
+            <li><strong>Minimalism & Clean Aesthetics:</strong> "Less is more." Removing unnecessary elements, using generous whitespace, clear typography, and a limited color palette to reduce cognitive load and focus on the essential.</li>
+            <li><strong>Atomic Design:</strong> A methodology for consistent design systems by breaking interfaces into building blocks (Atoms like buttons, Molecules like search bars, Organisms like headers, Templates, Pages).</li>
+            <li><strong>Design Systems:</strong> A library of reusable components, style guides (colors, typography), and patterns (e.g. Material Design, Apple HIG, Ant Design) that ensure consistency and speed up development.</li>
+          </ul>
+        </section>
+        <section class="design-section">
+          <h3 class="design-section-title">2. Visual & Interaction Techniques</h3>
+          <p class="design-intro">The specific "look and feel" patterns users interact with.</p>
+          <ul class="design-list">
+            <li><strong>Micro-Interactions:</strong> Small, purposeful animations that provide feedback and make the interface feel alive (e.g. like button animation, loading spinner).</li>
+            <li><strong>Neumorphism:</strong> Soft, extruded plastic look using shadows and highlights on the same background; use is limited due to accessibility.</li>
+            <li><strong>Glassmorphism:</strong> Background blur, transparency, and light borders for a frosted-glass effect on modals and cards; creates depth and hierarchy.</li>
+            <li><strong>Bento Grids:</strong> Structured grid of rectangles and squares for diverse content; popularized by Apple in product launches.</li>
+            <li><strong>Advanced Data Visualization:</strong> Interactive charts, graphs, and real-time data that are both beautiful and functional.</li>
+            <li><strong>Dark Mode Design:</strong> Dedicated dark theme for reduced eye strain and battery savings on OLED.</li>
+          </ul>
+        </section>
+        <section class="design-section">
+          <h3 class="design-section-title">3. Layout & Navigation Patterns</h3>
+          <p class="design-intro">How information is organized and how users move through it.</p>
+          <ul class="design-list">
+            <li><strong>Responsive & Adaptive Design:</strong> Responsive fluid layout (CSS Grid/Flexbox); adaptive pre-designed layouts per breakpoint. Mobile-first is standard.</li>
+            <li><strong>Asymmetric & Broken Grid Layouts:</strong> Dynamic layouts that break rigid columns for visual interest.</li>
+            <li><strong>Vertical & Horizontal Scrolling:</strong> Scroll as narrative tool: horizontal galleries, parallax scrolling.</li>
+            <li><strong>Thumb-Friendly Navigation (Mobile):</strong> Key actions in the bottom half within the "thumb zone."</li>
+          </ul>
+        </section>
+        <section class="design-section">
+          <h3 class="design-section-title">4. Technological & Implementation Techniques</h3>
+          <p class="design-intro">The "how" behind the visuals.</p>
+          <ul class="design-list">
+            <li><strong>Component-Based Architecture (React, Vue, Angular):</strong> Reusable, independent components for scalability and consistency.</li>
+            <li><strong>Motion UI (Framer Motion, GSAP, Lottie):</strong> Sophisticated, performant animations and interactive SVG/JSON.</li>
+            <li><strong>CSS-in-JS (Styled-components, Emotion):</strong> Scoped, dynamic theming.</li>
+            <li><strong>Utility-First CSS (Tailwind):</strong> Rapid custom design with utility classes.</li>
+            <li><strong>Voice User Interfaces (VUI):</strong> Designing for voice (Alexa, in-app voice commands).</li>
+            <li><strong>Augmented Reality (AR) UI:</strong> Digital elements in the real world (e.g. IKEA Place, Snapchat filters).</li>
+          </ul>
+        </section>
+        <section class="design-section">
+          <h3 class="design-section-title">5. Accessibility & Inclusivity (Non-Negotiable)</h3>
+          <ul class="design-list">
+            <li><strong>WCAG Compliance:</strong> Contrast, keyboard navigation, screen reader support (ARIA), and more.</li>
+            <li><strong>Inclusive Design:</strong> Considering diversity in ability, language, culture, gender, age.</li>
+          </ul>
+        </section>
+        <section class="design-section">
+          <h3 class="design-section-title">6. Emerging & Cutting-Edge Trends</h3>
+          <ul class="design-list">
+            <li><strong>AI-Powered UI:</strong> Interfaces that adapt to user behavior; embedded AI co-pilots (e.g. ChatGPT-like assistants).</li>
+            <li><strong>3D & Immersive (WebGL, Three.js):</strong> Real-time 3D and interactive product viz in the browser.</li>
+            <li><strong>Generative UI:</strong> Layout or content generated algorithmically from the user's goal.</li>
+          </ul>
+        </section>
+        <section class="design-section design-section--mindset">
+          <h3 class="design-section-title">The Modern UI Mindset</h3>
+          <p class="design-mindset">Modern UI is not just aesthetics; it's about creating <strong>intuitive, efficient, and delightful</strong> experiences that are:</p>
+          <ul class="design-list">
+            <li>Fast & Performant (Core Web Vitals)</li>
+            <li>Consistent across platforms</li>
+            <li>Accessible to all users</li>
+            <li>Context-Aware (device, location, user needs)</li>
+            <li>Human-Centered above all else</li>
+          </ul>
+          <p class="design-outro">The best UIs seamlessly blend these techniques to serve the user's goals, not just to look "trendy."</p>
+        </section>
+      </div>
+      <button id="designCloseBtn" type="button" class="btn btn-primary" style="margin-top: 1rem;">Close</button>
+    </div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>

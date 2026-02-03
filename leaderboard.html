@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leaderboard — Snake Game</title>
+  <link rel="icon" type="image/jpeg" href="R.jpeg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="standalone-page standalone-page--leaderboard">
+    <header class="standalone-header">
+      <a href="index.html" class="standalone-menu-btn" title="Back to home">☰ Menu</a>
+      <h1 class="standalone-title">🏆 Leaderboard</h1>
+    </header>
+    <main class="standalone-main">
+      <div class="dashboard-section leaderboard-panel">
+        <div class="leaderboard-top3" id="leaderboardTop3" aria-label="Top 3 players"></div>
+        <ol id="leaderboardList" class="leaderboard-list" aria-label="Ranked players"></ol>
+        <div class="leaderboard-your-rank" id="leaderboardYourRank">
+          <span class="your-rank-label">Your current rank</span>
+          <span class="your-rank-value"><span id="yourRankNum">—</span> · <span id="yourRankScore">0</span> points</span>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="leaderboard.js"></script>
+</body>
+</html>
